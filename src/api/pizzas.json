@@ -1,0 +1,127 @@
+[
+    {
+        "name": "Margherita",
+        "price": 19.90,
+        "ingredients": [
+            "sos pomidorowy",
+            "ser mozzarella"
+        ],
+        "photo": "pizza-margheritta.jpg"
+    },
+    {
+        "name": "Funghi",
+        "price": 21.90,
+        "ingredients": [
+            "sos pomidorowy",
+            "ser mozzarella",
+            "pieczarki"
+        ],
+        "photo": "pizza-funghi.jpg"
+    },
+    {
+        "name": "Vesuvio",
+        "price": 22.90,
+        "ingredients": [
+            "sos pomidorowy",
+            "ser mozzarella",
+            "szynka"
+        ],
+        "photo": "pizza-vesuvio.jpg"
+    },
+    {
+        "name": "Cacciatore",
+        "price": 22.90,
+        "ingredients": [
+            "sos pomidorowy",
+            "ser mozzarella",
+            "salami"
+        ],
+        "photo": "pizza-cacciatore.jpg"
+    },
+    {
+        "name": "Toscana",
+        "price": 24.90,
+        "ingredients": [
+            "sos pomidorowy",
+            "ser mozzarella",
+            "szynka",
+            "pieczarki"
+        ],
+        "photo": "pizza-toscana.jpg"
+    },
+    {
+        "name": "Bolonia",
+        "price": 27.90,
+        "ingredients": [
+            "sos pomidorowy",
+            "ser mozzarella",
+            "szynka",
+            "pieczarki",
+            "cebula",
+            "papryka czerwona"
+        ],
+        "photo": "pizza-bolonia.jpg"
+    },
+    {
+        "name": "Pepperone",
+        "price": 26.90,
+        "ingredients": [
+            "sos pomidorowy",
+            "ser mozzarella",
+            "szynka",
+            "pepperoni",
+            "cebula"
+        ],
+        "photo": "pizza-peperone.jpg"
+    },
+    {
+        "name": "Vegetariana",
+        "price": 28.90,
+        "ingredients": [
+            "sos pomidorowy",
+            "ser mozzarella",
+            "pieczarki",
+            "oliwki",
+            "kukurydza",
+            "cebula",
+            "papryka czerwona"
+        ],
+        "photo": "pizza-vegetariana.jpg"
+    },
+    {
+        "name": "Hawaii",
+        "price": 26.90,
+        "ingredients": [
+            "sos pomidorowy",
+            "ser mozzarella",
+            "szynka",
+            "ananas"
+        ],
+        "photo": "pizza-hawaii.jpg"
+    },
+    {
+        "name": "Pescatore",
+        "price": 26.90,
+        "ingredients": [
+            "sos pomidorowy",
+            "ser mozzarella",
+            "tuńczyk",
+            "cebula",
+            "kapary"
+        ],
+        "photo": "pizza-pescatore.jpg"
+    },
+    {
+        "name": "Broccoli",
+        "price": 28.90,
+        "ingredients": [
+            "sos pomidorowy",
+            "ser mozzarella",
+            "szynka",
+            "brokuły",
+            "ser topiony"
+        ],
+        "photo": "pizza-brocolli.jpg"
+    }
+
+]
