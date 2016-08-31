@@ -1,7 +1,7 @@
 [
     {
         "name": "Margherita",
-        "price": 19.90,
+        "price": "19.90",
         "ingredients": [
             "sos pomidorowy",
             "ser mozzarella"
@@ -10,7 +10,7 @@
     },
     {
         "name": "Funghi",
-        "price": 21.90,
+        "price": "21.90",
         "ingredients": [
             "sos pomidorowy",
             "ser mozzarella",
@@ -20,7 +20,7 @@
     },
     {
         "name": "Vesuvio",
-        "price": 22.90,
+        "price": "22.90",
         "ingredients": [
             "sos pomidorowy",
             "ser mozzarella",
@@ -30,7 +30,7 @@
     },
     {
         "name": "Cacciatore",
-        "price": 22.90,
+        "price": "22.90",
         "ingredients": [
             "sos pomidorowy",
             "ser mozzarella",
@@ -40,7 +40,7 @@
     },
     {
         "name": "Toscana",
-        "price": 24.90,
+        "price": "24.90",
         "ingredients": [
             "sos pomidorowy",
             "ser mozzarella",
@@ -51,7 +51,7 @@
     },
     {
         "name": "Bolonia",
-        "price": 27.90,
+        "price": "27.90",
         "ingredients": [
             "sos pomidorowy",
             "ser mozzarella",
@@ -64,7 +64,7 @@
     },
     {
         "name": "Pepperone",
-        "price": 26.90,
+        "price": "26.90",
         "ingredients": [
             "sos pomidorowy",
             "ser mozzarella",
@@ -76,7 +76,7 @@
     },
     {
         "name": "Vegetariana",
-        "price": 28.90,
+        "price": "28.90",
         "ingredients": [
             "sos pomidorowy",
             "ser mozzarella",
@@ -90,7 +90,7 @@
     },
     {
         "name": "Hawaii",
-        "price": 26.90,
+        "price": "26.90",
         "ingredients": [
             "sos pomidorowy",
             "ser mozzarella",
@@ -101,7 +101,7 @@
     },
     {
         "name": "Pescatore",
-        "price": 26.90,
+        "price": "26.90",
         "ingredients": [
             "sos pomidorowy",
             "ser mozzarella",
@@ -113,7 +113,7 @@
     },
     {
         "name": "Broccoli",
-        "price": 28.90,
+        "price": "28.90",
         "ingredients": [
             "sos pomidorowy",
             "ser mozzarella",
@@ -123,5 +123,4 @@
         ],
         "photo": "pizza-brocolli.jpg"
     }
-
 ]
