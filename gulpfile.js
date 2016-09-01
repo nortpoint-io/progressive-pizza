@@ -2,25 +2,64 @@ var gulp = require('gulp');
 var browserSync = require('browser-sync').create();
 var sass = require('gulp-sass');
 var packageJson = require('./package.json');
+var del = require('del');
+var sequence = require('run-sequence');
+
+var SRC_DIR = 'src';
+var BUILD_DIR = 'build';
+
+gulp.task('clean', function() {
+    return del(BUILD_DIR);
+});
+
+gulp.task('copy-html', function() {
+    return gulp.src(SRC_DIR + '/*.html')
+                .pipe(gulp.dest(BUILD_DIR));
+});
+
+gulp.task('copy-api', function() {
+    return gulp.src(SRC_DIR + '/api/**/*')
+                .pipe(gulp.dest(BUILD_DIR + '/api'));
+});
+
+gulp.task('copy-js', function() {
+    return gulp.src(SRC_DIR + '/js/*.js')
+                .pipe(gulp.dest(BUILD_DIR + '/js'));
+});
+
+gulp.task('copy-img', function() {
+    return gulp.src(SRC_DIR + '/img/*.jpg')
+                .pipe(gulp.dest(BUILD_DIR + '/img'));
+});
+
+gulp.task('copy', ['copy-html', 'copy-api', 'copy-js', 'copy-img']);
 
 // Static Server + watching scss/html files
-gulp.task('serve', ['sass'], function() {
-    browserSync.init({ server: './src' });
+gulp.task('serve', ['build'], function() {
+    browserSync.init({ server: './' + BUILD_DIR });
+
+    gulp.watch(SRC_DIR + '/*.html', ['copy-html']);
+    gulp.watch(SRC_DIR + '/js/*.js', ['copy-js']);
+    gulp.watch(SRC_DIR + '/img/*.jpg', ['copy-img']);
+    gulp.watch(SRC_DIR + '/api/**/*', ['copy-api']);
+
+    gulp.watch(SRC_DIR + '/scss/*.scss', ['sass']);
 
     gulp.watch([
-        'src/*.html',
-        'src/js/*.js',
-        'src/img/*.jpg'
+        BUILD_DIR + '/*.html',
+        BUILD_DIR + '/js/*.js',
+        BUILD_DIR + '/img/*.jpg'
     ], ['generate-service-worker']);
-    gulp.watch('src/scss/*.scss', ['sass']);
-    gulp.watch('src/service-worker.js').on('change', browserSync.reload);
+
+    gulp.watch(BUILD_DIR + '/service-worker.js')
+        .on('change', browserSync.reload);
 });
 
 // Compile sass into CSS & auto-inject into browsers
 gulp.task('sass', function() {
-    return gulp.src('src/scss/*.scss')
+    return gulp.src(SRC_DIR + '/scss/*.scss')
         .pipe(sass())
-        .pipe(gulp.dest('src/css'))
+        .pipe(gulp.dest(BUILD_DIR + '/css'))
         .pipe(browserSync.stream());
 });
 
@@ -28,11 +67,10 @@ gulp.task('sass', function() {
 gulp.task('generate-service-worker', function(callback) {
     var path = require('path');
     var swPrecache = require('sw-precache');
-    var rootDir = 'src';
 
-    swPrecache.write(path.join(rootDir, 'service-worker.js'), {
-        staticFileGlobs: [rootDir + '/**/*.{js,html,css,jpg}'],
-        stripPrefix: rootDir,
+    swPrecache.write(path.join(BUILD_DIR, 'service-worker.js'), {
+        staticFileGlobs: [BUILD_DIR + '/**/*.{js,html,css,jpg}'],
+        stripPrefix: BUILD_DIR,
         cacheId: packageJson.name,
         runtimeCaching: [{
             urlPattern: /\/api\//,
@@ -54,4 +92,12 @@ gulp.task('generate-service-worker', function(callback) {
     }, callback);
 });
 
-gulp.task('default', ['sass', 'generate-service-worker', 'serve']);
+gulp.task('build', function(callback) {
+    sequence(
+        'clean',
+        ['copy', 'sass'],
+        'generate-service-worker',
+        callback
+    );
+});
+gulp.task('default', ['serve']);
