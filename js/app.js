@@ -35,6 +35,8 @@
             item.querySelector('.pizza-price').textContent = pizza.price
                                                                     + ' PLN';
             item.querySelector('.pizza-name').textContent = pizza.name;
+            item.querySelector('.pizza-image')
+                .setAttribute('src', './img/' + pizza.photo);
             app.pizzasList.appendChild(item);
         }
 
