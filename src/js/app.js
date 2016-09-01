@@ -5,13 +5,14 @@
 
     var app = {
         isLoading: true,
-        basket: [],
-        pizzas: [],
+        cart: [],
         spinner: document.querySelector('.spinner'),
         pizzasListContainer: document.querySelector('.pizza-list'),
         pizzasList: document.querySelector('.pizza-list > ul'),
         pizzaListItemTemplate: document.querySelector('.pizzaListItemTemplate'),
-        dialog: document.querySelector('dialog#pizza-dialog')
+        dialog: document.querySelector('dialog#pizza-dialog'),
+        cartIcon: document.querySelector('.cart-icon'),
+        snackbar: document.querySelector('.mdl-snackbar')
     };
 
     if (! app.dialog.showModal) {
@@ -38,9 +39,16 @@
         request.send();
     };
 
-    var pizzaListItemEventListener = function(pizza) {
+    var pizzaListItemClickEventListener = function(pizza) {
         return function() {
             app.showPizzaDialog(pizza);
+        };
+    };
+
+    var pizzaListItemAddToCartClickEventListener = function(pizza) {
+        return function(event) {
+            event.preventDefault();
+            app.addToCart(pizza);
         };
     };
 
@@ -55,7 +63,11 @@
             item.querySelector('.pizza-image')
                 .setAttribute('src', './img/' + pizza.photo);
             item.querySelector('.mdl-list__item-primary-content')
-                .addEventListener('click', pizzaListItemEventListener(pizza));
+                .addEventListener('click',
+                                pizzaListItemClickEventListener(pizza));
+            item.querySelector('.add-to-cart')
+                .addEventListener('click',
+                            pizzaListItemAddToCartClickEventListener(pizza));
             app.pizzasList.appendChild(item);
         }
 
@@ -74,16 +86,45 @@
         item.querySelector('.pizza-image')
             .setAttribute('src', './img/' + pizza.photo);
 
-        var ingredients = '';
-        for (var i = 0; i < pizza.ingredients.length; i++) {
-            if (i > 0) {
-                ingredients += ', ';
-            }
-            ingredients += pizza.ingredients[i];
-        }
+        var ingredients = pizza.ingredients.join(', ');
         item.querySelector('.pizza-ingredients').textContent = ingredients;
 
         app.dialog.showModal();
+    };
+
+    app.updateCartIcon = function() {
+        var count = app.cart.length;
+        app.cartIcon.setAttribute('data-badge', count);
+        if (count) {
+            app.cartIcon.classList.add('mdl-badge');
+        } else {
+            app.cartIcon.classList.remove('mdl-badge');
+        }
+    };
+
+    app.showSnackbar = function(data) {
+        app.snackbar.MaterialSnackbar.showSnackbar(data);
+    };
+
+    app.addToCart = function(pizza) {
+        app.cart.push(pizza);
+        app.updateCartIcon();
+
+        var handler = function() {
+            var index = app.cart.indexOf(pizza);
+            if (index >= 0) {
+                app.cart.splice(index, 1);
+                app.updateCartIcon();
+            }
+        };
+
+        var data = {
+            message: 'Dodano ' + pizza.name + ' do zamówienia',
+            timeout: 2000,
+            actionHandler: handler,
+            actionText: 'Cofnij'
+        };
+        app.showSnackbar(data);
     };
 
     app.getPizzas();

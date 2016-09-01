@@ -15,19 +15,9 @@
         <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
             <header class="mdl-layout__header">
                 <div class="mdl-layout__header-row">
-                    <!-- Title -->
                     <span class="mdl-layout-title">Progressive Pizza</span>
-                    <!-- Add spacer, to align navigation to the right -->
                     <div class="mdl-layout-spacer"></div>
-                    <!-- Navigation. We hide it in small screens. -->
-                    <nav class="mdl-navigation mdl-layout--large-screen-only">
-                        <a class="mdl-navigation__link" href="">Menu</a>
-                        <a class="mdl-navigation__link" href="">Koszyk</a>
-                        <a class="mdl-navigation__link" href="">Dane adresowe</a>
-                        <a class="mdl-navigation__link" href="">Historia zamówień</a>
-                        <a class="mdl-navigation__link" href="">Wyloguj</a>
-                    </nav>
-                </div>
+                    <div class="material-icons mdl-badge--overlap cart-icon" data-badge="0">shopping_cart</div>
             </header>
             <div class="mdl-layout__drawer">
                 <div class="mdl-card">
@@ -75,7 +65,7 @@
                                     <span class="mdl-list__item-sub-title pizza-price"></span>
                                 </span>
                                 <span class="mdl-list__item-secondary-content">
-                                    <a class="mdl-list__item-secondary-action" href="#"><i class="material-icons">add_shopping_cart</i></a>
+                                    <a class="mdl-list__item-secondary-action add-to-cart" href="#"><i class="material-icons">add_shopping_cart</i></a>
                                 </span>
                             </li>
                         </ul>
@@ -103,6 +93,11 @@
                             </div>
                         </div>
                     </dialog>
+
+                    <div class="mdl-js-snackbar mdl-snackbar">
+                        <div class="mdl-snackbar__text"></div>
+                        <button class="mdl-snackbar__action" type="button"></button>
+                    </div>
                 </div>
             </main>
         </div>
