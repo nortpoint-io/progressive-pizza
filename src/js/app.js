@@ -20,7 +20,7 @@
     }
 
     app.dialog.querySelector('.close').addEventListener('click', function() {
-        app.dialog.close();
+        app.closePizzaDialog();
     });
 
     app.getPizzas = function() {
@@ -89,7 +89,23 @@
         var ingredients = pizza.ingredients.join(', ');
         item.querySelector('.pizza-ingredients').textContent = ingredients;
 
+        app.dialogAddToCartHandler = function(event) {
+            event.preventDefault();
+
+            app.closePizzaDialog();
+            app.addToCart(pizza);
+        };
+        item.querySelector('.add-to-cart')
+            .addEventListener('click', app.dialogAddToCartHandler);
+
         app.dialog.showModal();
+    };
+
+    app.closePizzaDialog = function() {
+        app.dialog.querySelector('.add-to-cart')
+            .removeEventListener('click', app.dialogAddToCartHandler);
+        delete app.dialogAddToCartHandler;
+        app.dialog.close();
     };
 
     app.updateCartIcon = function() {
