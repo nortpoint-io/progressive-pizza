@@ -8,7 +8,8 @@
         <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
         <link rel="stylesheet" href="https://code.getmdl.io/1.2.0/material.indigo-pink.min.css">
         <script defer src="https://code.getmdl.io/1.2.0/material.min.js"></script>
-        <link rel="stylesheet" type="text/css" href="css/inline.css">
+        <script src="./js/dialog-polyfill.js"></script>
+        <link rel="stylesheet" type="text/css" href="./css/inline.css">
     </head>
     <body>
         <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
@@ -79,10 +80,32 @@
                             </li>
                         </ul>
                     </div>
+
+                    <dialog id="pizza-dialog">
+                        <div class="mdl-card mdl-shadow--2dp">
+                            <div class="mdl-card__title mdl-card--expand">
+                                <h4 class="pizza-name">Margherita</h4>
+                            </div>
+                            <div class="mdl-card__media">
+                                <img class="pizza-image" src="./img/pizza-margheritta.jpg" alt="">
+                            </div>
+                            <div class="mdl-card__supporting-text">
+                                <div>Cena: <span class="pizza-price">21,90 PLN</span></div>
+                                <div>Składniki: <span class="pizza-ingredients">pieczarki, ser</span></div>
+                            </div>
+                            <div class="mdl-card__actions mdl-card--border">
+                                <button type="button" class="mdl-button close">Zamknij</button>
+                            </div>
+                            <div class="mdl-card__menu">
+                                <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
+                                    <i class="material-icons">add_shopping_cart</i>
+                                </button>
+                            </div>
+                        </div>
+                    </dialog>
                 </div>
             </main>
         </div>
-
-        <script src="js/app.js"></script>
+        <script src="./js/app.js"></script>
     </body>
 </html>

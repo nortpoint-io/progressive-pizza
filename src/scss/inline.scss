@@ -1,3 +1,5 @@
+@import 'dialog-polyfill';
+
 $accentColor: #ff4081;
 $whiteColor: #ffffff;
 
@@ -5,6 +7,12 @@ $whiteColor: #ffffff;
     position: fixed;
     top: 50%;
     left: 50%;
+}
+
+ul {
+    .mdl-list__item-primary-content {
+        cursor: pointer;
+    }
 }
 
 .mdl-card__title {
@@ -30,4 +38,22 @@ $whiteColor: #ffffff;
     width: 80px;
     height: 80px;
     margin-bottom: 20px;
+}
+
+dialog {
+    padding: 0;
+    border: none;
+
+    .mdl-card__menu {
+        color: $whiteColor;
+    }
+
+    .mdl-card__media {
+        text-align: center;
+    }
+
+    img {
+        border-radius: 5%;
+        margin: 15px;
+    }
 }
