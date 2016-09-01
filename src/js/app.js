@@ -11,7 +11,7 @@
         pizzasList: document.querySelector('.pizza-list > ul'),
         pizzaListItemTemplate: document.querySelector('.pizzaListItemTemplate'),
         dialog: document.querySelector('dialog#pizza-dialog'),
-        cartIcon: document.querySelector('.cart-icon'),
+        cartIcon: document.querySelectorAll('.cart-icon'),
         snackbar: document.querySelector('.mdl-snackbar')
     };
 
@@ -110,11 +110,14 @@
 
     app.updateCartIcon = function() {
         var count = app.cart.length;
-        app.cartIcon.setAttribute('data-badge', count);
-        if (count) {
-            app.cartIcon.classList.add('mdl-badge');
-        } else {
-            app.cartIcon.classList.remove('mdl-badge');
+        for (var i = 0; i < app.cartIcon.length; i++) {
+            var cartIcon = app.cartIcon[i];
+            cartIcon.setAttribute('data-badge', count);
+            if (count) {
+                cartIcon.classList.add('mdl-badge');
+            } else {
+                cartIcon.classList.remove('mdl-badge');
+            }
         }
     };
 
