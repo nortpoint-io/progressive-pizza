@@ -12,7 +12,7 @@
     };
 
     app.getPizzas = function() {
-        var url = '/api/pizzas.json';
+        var url = './api/pizzas.json';
 
         var request = new XMLHttpRequest();
         request.onreadystatechange = function() {
@@ -46,4 +46,11 @@
     };
 
     app.getPizzas();
+
+    /*
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker
+                .register('/service-worker.js');
+    }
+    */
 })();
