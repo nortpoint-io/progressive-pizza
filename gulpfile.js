@@ -73,9 +73,6 @@ gulp.task('generate-service-worker', function(callback) {
         stripPrefix: BUILD_DIR,
         cacheId: packageJson.name,
         runtimeCaching: [{
-            urlPattern: /\/api\//,
-            handler: 'cacheFirst'
-        }, {
             urlPattern: /img/,
             handler: 'cacheFirst',
             options: {
