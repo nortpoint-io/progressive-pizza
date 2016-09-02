@@ -1,4 +1,4 @@
-/* global dialogPolyfill */
+/* global dialogPolyfill addToHomescreen */
 
 (function() {
     'use strict';
@@ -199,6 +199,7 @@
         app.showSnackbar(data);
     };
 
+    addToHomescreen();
     app.getPizzas();
 
     if ('serviceWorker' in navigator) {
