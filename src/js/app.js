@@ -148,9 +148,13 @@
             cartList.appendChild(item);
         }
 
-        var total = app.cart.reduce(function(a, b) {
-            return a.price + b.price;
-        });
+        var total = app.cart
+            .map(function(pizza) {
+                return pizza.price;
+            })
+            .reduce(function(a, b) {
+                return a + b;
+            }, 0.0);
         app.cartDialog.querySelector('.total-price').textContent
                                                 = total.toFixed(2) + ' PLN';
 
