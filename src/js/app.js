@@ -10,18 +10,38 @@
         pizzasListContainer: document.querySelector('.pizza-list'),
         pizzasList: document.querySelector('.pizza-list > ul'),
         pizzaListItemTemplate: document.querySelector('.pizzaListItemTemplate'),
-        dialog: document.querySelector('dialog#pizza-dialog'),
-        cartIcon: document.querySelectorAll('.cart-icon'),
-        snackbar: document.querySelector('.mdl-snackbar')
+        pizzaDialog: document.querySelector('dialog#pizza-dialog'),
+        cartIcons: document.querySelectorAll('.cart-icon'),
+        snackbar: document.querySelector('.mdl-snackbar'),
+        cartDialog: document.querySelector('dialog#cart-dialog'),
+        openCartButtons: document.querySelectorAll('.open-cart'),
+        cartListItemTemplate: document.querySelector('.cartListItemTemplate')
     };
 
-    if (! app.dialog.showModal) {
-        dialogPolyfill.registerDialog(app.dialog);
+    if (!app.pizzaDialog.showModal) {
+        dialogPolyfill.registerDialog(app.pizzaDialog);
     }
 
-    app.dialog.querySelector('.close').addEventListener('click', function() {
-        app.closePizzaDialog();
-    });
+    app.pizzaDialog.querySelector('.close')
+        .addEventListener('click', function() {
+            app.closePizzaDialog();
+        });
+
+    if (!app.cartDialog.showModal) {
+        dialogPolyfill.registerDialog(app.cartDialog);
+    }
+
+    app.cartDialog.querySelector('.close')
+        .addEventListener('click', function() {
+            app.cartDialog.close();
+        });
+
+    for (var i = 0; i < app.openCartButtons.length; i++) {
+        app.openCartButtons[i].addEventListener('click', function(event) {
+            event.preventDefault();
+            app.showCartDialog();
+        });
+    }
 
     app.getPizzas = function() {
         var url = './api/pizzas.json';
@@ -79,7 +99,7 @@
     };
 
     app.showPizzaDialog = function(pizza) {
-        var item = app.dialog;
+        var item = app.pizzaDialog;
         item.querySelector('.pizza-price').textContent = pizza.price
                                                                     + ' PLN';
         item.querySelector('.pizza-name').textContent = pizza.name;
@@ -98,20 +118,43 @@
         item.querySelector('.add-to-cart')
             .addEventListener('click', app.dialogAddToCartHandler);
 
-        app.dialog.showModal();
+        app.pizzaDialog.showModal();
     };
 
     app.closePizzaDialog = function() {
-        app.dialog.querySelector('.add-to-cart')
+        app.pizzaDialog.querySelector('.add-to-cart')
             .removeEventListener('click', app.dialogAddToCartHandler);
         delete app.dialogAddToCartHandler;
-        app.dialog.close();
+        app.pizzaDialog.close();
+    };
+
+    app.showCartDialog = function() {
+        var cartList = app.cartDialog.querySelector('.cart-list');
+        var oldItems = cartList.querySelectorAll('li');
+        for (var i = 0; i < oldItems.length; i++) {
+            cartList.removeChild(oldItems[i]);
+        }
+
+        for (i = 0; i < app.cart.length; i++) {
+            var pizza = app.cart[i];
+            var item = app.cartListItemTemplate.cloneNode(true);
+            item.classList.remove('cartListItemTemplate');
+            item.querySelector('.pizza-price').textContent = pizza.price
+                                                                    + ' PLN';
+            item.querySelector('.pizza-name').textContent = pizza.name;
+            item.querySelector('.pizza-image')
+                .setAttribute('src', './img/' + pizza.photo);
+
+            cartList.appendChild(item);
+        }
+
+        app.cartDialog.showModal();
     };
 
     app.updateCartIcon = function() {
         var count = app.cart.length;
-        for (var i = 0; i < app.cartIcon.length; i++) {
-            var cartIcon = app.cartIcon[i];
+        for (var i = 0; i < app.cartIcons.length; i++) {
+            var cartIcon = app.cartIcons[i];
             cartIcon.setAttribute('data-badge', count);
             if (count) {
                 cartIcon.classList.add('mdl-badge');

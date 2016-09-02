@@ -17,7 +17,9 @@
                 <div class="mdl-layout__header-row">
                     <span class="mdl-layout-title">Progressive Pizza</span>
                     <div class="mdl-layout-spacer"></div>
-                    <div class="material-icons mdl-badge--overlap cart-icon" data-badge="0">shopping_cart</div>
+                    <a class="mdl-navigation__link open-cart" href="#">
+                        <i class="material-icons mdl-badge--overlap cart-icon" data-badge="0">shopping_cart</i>
+                    </a>
             </header>
             <div class="mdl-layout__drawer">
                 <div class="mdl-card">
@@ -35,21 +37,17 @@
 
                 </span>
                 <nav class="mdl-navigation">
-                    <a class="mdl-navigation__link" href="">Menu</a>
-                    <a class="mdl-navigation__link" href=""><span class="cart-icon" data-badge="0">Koszyk</span></a>
-                    <a class="mdl-navigation__link" href="">Dane adresowe</a>
-                    <a class="mdl-navigation__link" href="">Historia zamówień</a>
-                    <a class="mdl-navigation__link" href="">Wyloguj</a>
+                    <a class="mdl-navigation__link" href="#">Menu</a>
+                    <a class="mdl-navigation__link open-cart" href="#"><span class="cart-icon" data-badge="0">Koszyk</span></a>
+                    <a class="mdl-navigation__link" href="#">Dane adresowe</a>
+                    <a class="mdl-navigation__link" href="#">Historia zamówień</a>
+                    <a class="mdl-navigation__link" href="#">Wyloguj</a>
                 </nav>
             </div>
             <main class="mdl-layout__content">
                 <div class="page-content">
-                    <!-- Your content goes here -->
-
                     <div class="pizza-list" hidden>
-                        <ul class="demo-list-two mdl-list">
-
-                        </ul>
+                        <ul class="mdl-list"></ul>
                     </div>
 
                     <div class="spinner">
@@ -66,6 +64,15 @@
                                 </span>
                                 <span class="mdl-list__item-secondary-content">
                                     <a class="mdl-list__item-secondary-action add-to-cart" href="#"><i class="material-icons">add_shopping_cart</i></a>
+                                </span>
+                            </li>
+                        </ul>
+                        <ul>
+                            <li class="mdl-list__item mdl-list__item--two-line cartListItemTemplate">
+                                <span class="mdl-list__item-primary-content">
+                                    <img src="" class="pizza-image mdl-list__item-avatar" alt="">
+                                    <span class="pizza-name"></span>
+                                    <span class="mdl-list__item-sub-title pizza-price"></span>
                                 </span>
                             </li>
                         </ul>
@@ -90,6 +97,23 @@
                                 <button class="mdl-button add-to-cart mdl-button--icon mdl-js-button mdl-js-ripple-effect">
                                     <i class="material-icons">add_shopping_cart</i>
                                 </button>
+                            </div>
+                        </div>
+                    </dialog>
+
+                    <dialog id="cart-dialog">
+                        <div class="mdl-card mdl-shadow--2dp">
+                            <div class="mdl-card__title">
+                                <h2 class="mdl-card__title-text">Koszyk</h2>
+                            </div>
+                            <div class="mdl-card__supporting-text">
+                                <ul class="mdl-list cart-list"></ul>
+                            </div>
+                            <div class="mdl-card__actions mdl-card--border">
+                                <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+                                Zapłać
+                                </a>
+                                <button type="button" class="mdl-button close">Zamknij</button>
                             </div>
                         </div>
                     </dialog>
