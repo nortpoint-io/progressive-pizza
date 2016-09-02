@@ -77,8 +77,8 @@
             var pizza = pizzas[i];
             var item = app.pizzaListItemTemplate.cloneNode(true);
             item.classList.remove('pizzaListItemTemplate');
-            item.querySelector('.pizza-price').textContent = pizza.price
-                                                                    + ' PLN';
+            item.querySelector('.pizza-price').textContent
+                                            = pizza.price.toFixed(2) + ' PLN';
             item.querySelector('.pizza-name').textContent = pizza.name;
             item.querySelector('.pizza-image')
                 .setAttribute('src', './img/' + pizza.photo);
@@ -100,8 +100,8 @@
 
     app.showPizzaDialog = function(pizza) {
         var item = app.pizzaDialog;
-        item.querySelector('.pizza-price').textContent = pizza.price
-                                                                    + ' PLN';
+        item.querySelector('.pizza-price').textContent
+                                            = pizza.price.toFixed(2) + ' PLN';
         item.querySelector('.pizza-name').textContent = pizza.name;
         item.querySelector('.pizza-image')
             .setAttribute('src', './img/' + pizza.photo);
@@ -139,14 +139,20 @@
             var pizza = app.cart[i];
             var item = app.cartListItemTemplate.cloneNode(true);
             item.classList.remove('cartListItemTemplate');
-            item.querySelector('.pizza-price').textContent = pizza.price
-                                                                    + ' PLN';
+            item.querySelector('.pizza-price').textContent
+                                            = pizza.price.toFixed(2) + ' PLN';
             item.querySelector('.pizza-name').textContent = pizza.name;
             item.querySelector('.pizza-image')
                 .setAttribute('src', './img/' + pizza.photo);
 
             cartList.appendChild(item);
         }
+
+        var total = app.cart.reduce(function(a, b) {
+            return a.price + b.price;
+        });
+        app.cartDialog.querySelector('.total-price').textContent
+                                                = total.toFixed(2) + ' PLN';
 
         app.cartDialog.showModal();
     };
