@@ -17,6 +17,11 @@ gulp.task('copy-html', function() {
                 .pipe(gulp.dest(BUILD_DIR));
 });
 
+gulp.task('copy-favicons', function() {
+    return gulp.src(SRC_DIR + '/favicons/**/*')
+                .pipe(gulp.dest(BUILD_DIR));
+});
+
 gulp.task('copy-api', function() {
     return gulp.src(SRC_DIR + '/api/**/*')
                 .pipe(gulp.dest(BUILD_DIR + '/api'));
@@ -32,7 +37,13 @@ gulp.task('copy-img', function() {
                 .pipe(gulp.dest(BUILD_DIR + '/img'));
 });
 
-gulp.task('copy', ['copy-html', 'copy-api', 'copy-js', 'copy-img']);
+gulp.task('copy', [
+    'copy-html',
+    'copy-api',
+    'copy-js',
+    'copy-img',
+    'copy-favicons'
+]);
 
 // Static Server + watching scss/html files
 gulp.task('serve', ['build'], function() {
