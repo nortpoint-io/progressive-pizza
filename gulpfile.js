@@ -96,7 +96,8 @@ gulp.task('generate-service-worker', function(callback) {
         }, {
             // Use a network first strategy for everything else.
             default: 'networkFirst'
-        }]
+        }],
+        importScripts: ['js/sw.js'],
     }, callback);
 });
 
