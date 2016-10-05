@@ -32,11 +32,6 @@ gulp.task('copy-js', function() {
                 .pipe(gulp.dest(BUILD_DIR + '/js'));
 });
 
-gulp.task('copy-sw', function() {
-    return gulp.src(SRC_DIR + '/sw.js')
-                .pipe(gulp.dest(BUILD_DIR));
-});
-
 gulp.task('copy-img', function() {
     return gulp.src(SRC_DIR + '/img/*.jpg')
                 .pipe(gulp.dest(BUILD_DIR + '/img'));
@@ -46,7 +41,6 @@ gulp.task('copy', [
     'copy-html',
     'copy-api',
     'copy-js',
-    'copy-sw',
     'copy-img',
     'copy-favicons'
 ]);
@@ -57,7 +51,6 @@ gulp.task('serve', ['build'], function() {
 
     gulp.watch(SRC_DIR + '/*.html', ['copy-html']);
     gulp.watch(SRC_DIR + '/js/*.js', ['copy-js']);
-    gulp.watch(SRC_DIR + '/sw.js', ['copy-sw']);
     gulp.watch(SRC_DIR + '/img/*.jpg', ['copy-img']);
     gulp.watch(SRC_DIR + '/api/**/*', ['copy-api']);
 
@@ -67,11 +60,10 @@ gulp.task('serve', ['build'], function() {
         BUILD_DIR + '/*.html',
         BUILD_DIR + '/js/*.js',
         BUILD_DIR + '/img/*.jpg'
-    // ], ['generate-service-worker']);
-    ]);
+    ], ['generate-service-worker']);
 
-    // gulp.watch(BUILD_DIR + '/service-worker.js')
-    //     .on('change', browserSync.reload);
+    gulp.watch(BUILD_DIR + '/service-worker.js')
+        .on('change', browserSync.reload);
 });
 
 // Compile sass into CSS & auto-inject into browsers
@@ -113,7 +105,7 @@ gulp.task('build', function(callback) {
     sequence(
         'clean',
         ['copy', 'sass'],
-        // 'generate-service-worker',
+        'generate-service-worker',
         callback
     );
 });
