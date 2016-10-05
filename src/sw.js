@@ -11,5 +11,13 @@ self.addEventListener('activate', function(event) {
 
 self.addEventListener('push', function(event) {
   console.log('Push message received', event);
-  // TODO
+
+  var title = 'Push message';
+
+  event.waitUntil(
+    self.registration.showNotification(title, {
+     body: 'The Message',
+     icon: 'favicon-32x32.png',
+     tag: 'my-tag'
+   }));
 });
