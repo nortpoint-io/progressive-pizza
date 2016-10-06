@@ -7,6 +7,16 @@ html
     div.container
       div.row
         div.col-md-8
+          h3 Apps subscriptions
+          table.table
+            tr
+              th Subscription date
+              th Subscription id
+            each sub_data, sub_id in SUBSCRIPTIONS
+              tr
+                td #{sub_data.date}
+                td #{sub_id}
+        div.col-md-8
           form(action="/", method='POST')
             h3 Send message to device
             div.form-group(class=error && responseError ? "has-error": "")

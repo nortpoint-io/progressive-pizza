@@ -11,17 +11,32 @@ app.set('view engine', 'jade');
 
 
 const FIREBASE_AUTHORIZATION_KEY = 'AIzaSyCb9ysSZxINYbX6QjruMT4wF85Mywvxi2U';
-let SUBSRIPTIONS = {};
+let SUBSCRIPTIONS = {};
 
 
 let indexHandler = function(req, res) {
-    res.render('index', {});
+    let context = {
+        SUBSCRIPTIONS: SUBSCRIPTIONS
+    };
+
+    res.render('index', context);
 }
 
 let subscribeHandler = function(req, res) {
-    let endpoint = req.body.subscription.endpoint;
-    SUBSRIPTIONS[endpoint] = {};
-    res.send({ status: 201 });
+    if (!req.body.subscription) {
+        res.status(400)
+        res.send({ error: 'JSON with subscription node is required.' });
+
+        return;
+    }
+
+    let subscription = req.body.subscription;
+    SUBSCRIPTIONS[subscription] = {
+        date: new Date()
+    };
+
+    res.status(201);
+    res.send({ status: 'OK' });
 }
 
 let sendMessageHandler = function(req, res) {
@@ -87,6 +102,7 @@ router.post('/', sendMessageHandler);
 router.post('/subscribe', subscribeHandler);
 
 
+app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(router);
 app.use(express.static(path.join(__dirname, 'public')));
