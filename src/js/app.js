@@ -1,6 +1,6 @@
 /* global dialogPolyfill addToHomescreen */
 
-(function() {
+(function($) {
     'use strict';
 
     var app = {
@@ -15,7 +15,7 @@
         snackbar: document.querySelector('.mdl-snackbar'),
         cartDialog: document.querySelector('dialog#cart-dialog'),
         openCartButtons: document.querySelectorAll('.open-cart'),
-        cartListItemTemplate: document.querySelector('.cartListItemTemplate')
+        cartListItemTemplate: document.querySelector('.cartListItemTemplate'),
     };
 
     if (!app.pizzaDialog.showModal) {
@@ -199,6 +199,17 @@
         app.showSnackbar(data);
     };
 
+    app.registerEndpoint = function(key) {
+        debugger;
+        $.ajax({
+            url: 'http://localhost:3010/subscribe',
+            method: 'POST',
+            data: {
+                subscription: key
+            }
+        })
+    }
+
     addToHomescreen();
     app.getPizzas();
 
@@ -212,10 +223,11 @@
                 console.log('Service Worker is ready :^)', reg);
                 reg.pushManager.subscribe({userVisibleOnly: true})
                     .then(function(sub) {
-                        console.log('endpoint:', sub.endpoint);
+                        var key = sub.endpoint.replace("https://android.googleapis.com/gcm/send/", "");
+                        app.registerEndpoint(key);
                     });
             }).catch(function(error) {
                 console.log('Service Worker error :^(', error);
             });
     }
-})();
+})(jQuery);

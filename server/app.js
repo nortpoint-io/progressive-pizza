@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
 const http = require('http');
+const cors = require('cors');
 
 const app = express();
 const router = express.Router();
@@ -57,7 +58,9 @@ let sendMessageHandler = function(req, res) {
 
     }, function(response) {
         let data = '';
-        let context = {}
+        let context = {
+            SUBSCRIPTIONS: SUBSCRIPTIONS
+        }
 
         if (response.statusCode == 401) {
             context.error = true;
@@ -89,6 +92,7 @@ let sendMessageHandler = function(req, res) {
                     context.errorMsg = body.results[0].error;
                 }
             }
+
             res.render('index', context);
         });
     });
@@ -102,6 +106,9 @@ router.post('/', sendMessageHandler);
 router.post('/subscribe', subscribeHandler);
 
 
+app.use(cors({
+    origin: ['http://localhost:3000']
+}));
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(router);
