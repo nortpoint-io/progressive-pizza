@@ -26,6 +26,8 @@ html
               div.help-block(class=error && responseError ? "" : "hidden") #{errorMsg}
             div.form-group
               input.form-control(type='text', name='message', id='message', placeholder='message', required='true')
+            div.form-group
+              input.form-control(type='text', name='title', id='title', placeholder='Message title', required='true')
 
             p.bg-danger(class=error ? "" : "hidden") #{errorMsg}
             p.bg-success(class=success ? "" : "hidden") #{successMsg}

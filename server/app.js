@@ -53,7 +53,7 @@ let sendMessageHandler = function(req, res) {
     };
     let payload = {
         body: req.body['message'],
-        title: 'Progressive pizza push'
+        title: req.body['title']
     };
 
     let pushSubscription = null;
