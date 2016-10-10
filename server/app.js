@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const path = require('path');
 const http = require('http');
 const cors = require('cors');
+const url = require('url');
 const webPush = require('web-push');
 const vapidKeys = webPush.generateVAPIDKeys();
 
@@ -27,13 +28,15 @@ let indexHandler = function(req, res) {
 
 let subscribeHandler = function(req, res) {
     let subscription = req.body;
+    const urlParts = url.parse(subscription.endpoint);
 
     console.log('Got new subscription:');
     console.log(subscription);
 
     SUBSCRIPTIONS[subscription.endpoint] = {
         date: new Date(),
-        data: subscription
+        data: subscription,
+        id: urlParts.path.split('/').pop()
     };
 
     res.status(201);
@@ -80,15 +83,12 @@ let sendMessageHandler = function(req, res) {
     let promise = webPush.sendNotification(pushSubscription, JSON.stringify(payload));
 
     promise.then(response => {
-        console.log('response: ');
-        console.log(response);
-
         context.success = true;
         context.successMsg = `Successfully send message to ${registrationId}`;
 
         res.render('index', context);
     }).catch(response => {
-        console.log('-errror');
+        console.log('GCM response error: ');
         console.log(response);
 
         if (response.statusCode == 400) {
