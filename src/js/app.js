@@ -199,15 +199,13 @@
         app.showSnackbar(data);
     };
 
-    app.registerEndpoint = function(key) {
-        debugger;
+    app.registerEndpoint = function(data) {
         $.ajax({
             url: 'http://localhost:3010/subscribe',
             method: 'POST',
-            data: {
-                subscription: key
-            }
-        })
+            data: data,
+            contentType: "application/json",
+        });
     }
 
     addToHomescreen();
@@ -223,8 +221,7 @@
                 console.log('Service Worker is ready :^)', reg);
                 reg.pushManager.subscribe({userVisibleOnly: true})
                     .then(function(sub) {
-                        var key = sub.endpoint.replace("https://android.googleapis.com/gcm/send/", "");
-                        app.registerEndpoint(key);
+                        app.registerEndpoint(JSON.stringify(sub));
                     });
             }).catch(function(error) {
                 console.log('Service Worker error :^(', error);

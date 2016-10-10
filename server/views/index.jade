@@ -27,7 +27,7 @@ html
             div.form-group
               input.form-control(type='text', name='message', id='message', placeholder='message', required='true')
 
-            p.bg-danger(class=error && badKey ? "" : "hidden") #{errorMsg}
+            p.bg-danger(class=error ? "" : "hidden") #{errorMsg}
             p.bg-success(class=success ? "" : "hidden") #{successMsg}
             button.btn.btn-success(type='submit') Send message
 

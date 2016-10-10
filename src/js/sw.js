@@ -10,14 +10,13 @@ self.addEventListener('activate', function(event) {
 });
 
 self.addEventListener('push', function(event) {
-  console.log('Push message received', event);
-
-  var title = 'Push message';
+  var payload = event.data.json(),
+      title = payload.title,
+      body = payload.body;
 
   event.waitUntil(
     self.registration.showNotification(title, {
-     body: 'The Message',
+     body: body,
      icon: 'favicon-32x32.png',
-     tag: 'my-tag'
    }));
 });

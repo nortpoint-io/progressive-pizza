@@ -3,6 +3,8 @@ const bodyParser = require('body-parser');
 const path = require('path');
 const http = require('http');
 const cors = require('cors');
+const webPush = require('web-push');
+const vapidKeys = webPush.generateVAPIDKeys();
 
 const app = express();
 const router = express.Router();
@@ -24,16 +26,14 @@ let indexHandler = function(req, res) {
 }
 
 let subscribeHandler = function(req, res) {
-    if (!req.body.subscription) {
-        res.status(400)
-        res.send({ error: 'JSON with subscription node is required.' });
+    let subscription = req.body;
 
-        return;
-    }
+    console.log('Got new subscription:');
+    console.log(subscription);
 
-    let subscription = req.body.subscription;
-    SUBSCRIPTIONS[subscription] = {
-        date: new Date()
+    SUBSCRIPTIONS[subscription.endpoint] = {
+        date: new Date(),
+        data: subscription
     };
 
     res.status(201);
@@ -41,64 +41,66 @@ let subscribeHandler = function(req, res) {
 }
 
 let sendMessageHandler = function(req, res) {
+    let context = {
+        SUBSCRIPTIONS: SUBSCRIPTIONS
+    };
     let registrationId = req.body['registration-id'] ;
     let requestBody = {
-        registration_ids: [registrationId]
+        to: registrationId,
+    };
+    let payload = {
+        body: req.body['message'],
+        title: 'Progressive pizza push'
     };
 
-    let request = http.request({
-        protocol: 'http:',
-        host: 'android.googleapis.com',
-        method: 'POST',
-        path: '/gcm/send',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `key=${FIREBASE_AUTHORIZATION_KEY}`
-        },
+    let pushSubscription = null;
 
-    }, function(response) {
-        let data = '';
-        let context = {
-            SUBSCRIPTIONS: SUBSCRIPTIONS
+    for (let key in SUBSCRIPTIONS) {
+        if (key.endsWith(registrationId)) {
+            pushSubscription = SUBSCRIPTIONS[key].data;
+            break;
         }
+    }
 
-        if (response.statusCode == 401) {
+    if (!pushSubscription) {
+        context.error = true;
+        context.errorMsg = 'Could not find subscription for provided registration id.';
+        res.render('index', context);
+
+        return;
+    }
+
+    webPush.setGCMAPIKey(FIREBASE_AUTHORIZATION_KEY);
+    webPush.setVapidDetails(
+      'mailto:gbednarski@centuria.pl',
+      vapidKeys.publicKey,
+      vapidKeys.privateKey
+    );
+
+    let promise = webPush.sendNotification(pushSubscription, JSON.stringify(payload));
+
+    promise.then(response => {
+        console.log('response: ');
+        console.log(response);
+
+        context.success = true;
+        context.successMsg = `Successfully send message to ${registrationId}`;
+
+        res.render('index', context);
+    }).catch(response => {
+        console.log('-errror');
+        console.log(response);
+
+        if (response.statusCode == 400) {
             context.error = true;
-            context.errorMsg = 'Something is wrong with Firebase authorization key.';
-            context.badKey = true;
+            context.errorMsg = 'Something is wrong with Firebase data.';
             res.render('index', context);
-
-            return;
+        } else {
+            context.error = true;
+            context.errorMsg = 'Unexpected error from GCM.';
+            res.render('index', context);
         }
-
-        response.on('data', function (chunk) {
-            data += chunk;
-        });
-
-        response.on('end', function () {
-            let body = JSON.parse(data);
-
-            if (body.success) {
-                context.success = true;
-                context.successMsg = `Successfully send message to ${registrationId}`;
-
-            } else {
-                context.error = true;
-                context.responseError = true;
-
-                if (body.results[0].error === 'InvalidRegistration') {
-                    context.errorMsg = `This ${registrationId} is invalid app registration id.`
-                } else {
-                    context.errorMsg = body.results[0].error;
-                }
-            }
-
-            res.render('index', context);
-        });
     });
-
-    request.write(JSON.stringify(requestBody));
-    request.end();
 }
 
 router.get('/', indexHandler);
