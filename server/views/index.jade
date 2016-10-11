@@ -12,12 +12,14 @@ html
             thead
               tr
                 th Subscription date
+                th Subscription user
                 th Subscription id
                 th Action
             tbody
               each sub_data, sub_id in SUBSCRIPTIONS
                 tr
                   td #{sub_data.date}
+                  td #{sub_data.userData.email}
                   td #{sub_data.id}
                   td.text-center
                     button.btn.btn-xs.btn-default Send message

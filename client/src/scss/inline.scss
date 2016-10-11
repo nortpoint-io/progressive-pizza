@@ -26,6 +26,11 @@ ul {
         display: block;
         padding-left: 20px;
     }
+
+    .mdl-card__subtitle-text {
+      padding-left: 20px;
+      word-break: break-word;
+    }
 }
 
 .mdl-layout__drawer {

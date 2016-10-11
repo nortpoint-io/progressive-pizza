@@ -28,14 +28,15 @@ let indexHandler = function(req, res) {
 
 let subscribeHandler = function(req, res) {
     let subscription = req.body;
-    const urlParts = url.parse(subscription.endpoint);
+    const urlParts = url.parse(subscription.endpointData.endpoint);
 
     console.log('Got new subscription:');
     console.log(subscription);
 
-    SUBSCRIPTIONS[subscription.endpoint] = {
+    SUBSCRIPTIONS[subscription.endpointData.endpoint] = {
         date: new Date(),
-        data: subscription,
+        endpointData: subscription.endpointData,
+        userData: subscription.userData,
         id: urlParts.path.split('/').pop()
     };
 
@@ -60,7 +61,7 @@ let sendMessageHandler = function(req, res) {
 
     for (let key in SUBSCRIPTIONS) {
         if (key.endsWith(registrationId)) {
-            pushSubscription = SUBSCRIPTIONS[key].data;
+            pushSubscription = SUBSCRIPTIONS[key].endpointData;
             break;
         }
     }
