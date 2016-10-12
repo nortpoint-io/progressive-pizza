@@ -24,7 +24,7 @@ coverage
 .lock-wscript
 
 # Compiled binary addons (http://nodejs.org/api/addons.html)
-client/build/Release
+build/Release
 
 # Dependency directories
 node_modules
@@ -36,6 +36,4 @@ jspm_packages
 # Optional REPL history
 .node_repl_history
 
-client/build
-
-server/.tern-project
+build
