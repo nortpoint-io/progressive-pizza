@@ -273,6 +273,9 @@ ul .mdl-list__item-primary-content {
   .mdl-card__title .mdl-card__title-text {
     display: block;
     padding-left: 20px; }
+  .mdl-card__title .mdl-card__subtitle-text {
+    padding-left: 20px;
+    word-break: break-word; }
 
 .mdl-layout__drawer .mdl-card {
   width: 100%; }

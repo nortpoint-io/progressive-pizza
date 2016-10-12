@@ -16,7 +16,9 @@
         <script defer src="https://code.getmdl.io/1.2.0/material.min.js"></script>
         <script src="./js/dialog-polyfill.js"></script>
         <script src="./js/addtohomescreen.min.js"></script>
+        <script src="./js/jquery-3.1.1.min.js"></script>
         <link rel="stylesheet" type="text/css" href="./css/inline.css">
+        <link rel="manifest" href="manifest.json">
     </head>
     <body>
         <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
@@ -31,10 +33,13 @@
             <div class="mdl-layout__drawer">
                 <div class="mdl-card">
                     <div class="mdl-card__title">
-                        <h2 class="mdl-card__title-text">
-                            <img class="avatar" src="./img/avatar.jpg" alt="">
-                            <div>Piotr Wojciechowski</div>
-                        </h2>
+                        <h5>
+                            <div class="mdl-card__title-text">
+                                <img class="avatar" src="./img/avatar.jpg" alt="">
+                                  <div>Piotr Wojciechowski</div>
+                            </div>
+                            <div class="mdl-card__subtitle-text"></div>
+                        </h5>
                     </div>
                     <div class="mdl-card__supporting-text">
                         Domyślny adres dostawy: nortpoint.io - Rubież 46H/259
@@ -142,6 +147,19 @@
                 </div>
             </main>
         </div>
+        <script src="https://www.gstatic.com/firebasejs/3.4.1/firebase.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/3.4.0/firebase-app.js"></script>
+        <script>
+          // Initialize Firebase
+          var config = {
+            apiKey: "AIzaSyBiiF-X6zgN37tAhm2dDe8IvoAnnNr4efg",
+            authDomain: "progressive-pizza.firebaseapp.com",
+            databaseURL: "https://progressive-pizza.firebaseio.com",
+            storageBucket: "progressive-pizza.appspot.com",
+            messagingSenderId: "939758477905"
+          };
+          firebase.initializeApp(config);
+        </script>
         <script src="./js/app.js"></script>
     </body>
 </html>

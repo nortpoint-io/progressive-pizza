@@ -1,10 +1,13 @@
 /* global dialogPolyfill addToHomescreen */
 
-(function() {
+(function($) {
     'use strict';
 
     var app = {
         isLoading: true,
+        settings: {
+            email: 'piotr.wojciechowski@nortpoint.io'
+        },
         cart: [],
         spinner: document.querySelector('.spinner'),
         pizzasListContainer: document.querySelector('.pizza-list'),
@@ -15,7 +18,8 @@
         snackbar: document.querySelector('.mdl-snackbar'),
         cartDialog: document.querySelector('dialog#cart-dialog'),
         openCartButtons: document.querySelectorAll('.open-cart'),
-        cartListItemTemplate: document.querySelector('.cartListItemTemplate')
+        cartListItemTemplate: document.querySelector('.cartListItemTemplate'),
+        sidebarCard: document.querySelector('.mdl-card'),
     };
 
     if (!app.pizzaDialog.showModal) {
@@ -41,6 +45,11 @@
             event.preventDefault();
             app.showCartDialog();
         });
+    }
+
+    app.init = function() {
+        app.sidebarCard.querySelector('.mdl-card__subtitle-text')
+            .textContent = app.settings.email;
     }
 
     app.getPizzas = function() {
@@ -199,11 +208,38 @@
         app.showSnackbar(data);
     };
 
+    app.registerEndpoint = function(endpointData) {
+        var data = {
+            endpointData: endpointData,
+            userData: app.settings
+        };
+
+        $.ajax({
+            url: 'http://localhost:3010/subscribe',
+            method: 'POST',
+            data: JSON.stringify(data),
+            contentType: "application/json",
+        });
+    }
+
     addToHomescreen();
+    app.init();
     app.getPizzas();
 
     if ('serviceWorker' in navigator) {
         navigator.serviceWorker
-                .register('/service-worker.js');
+            .register('/service-worker.js')
+            .then(function() {
+                return navigator.serviceWorker.ready;
+            })
+            .then(function(reg) {
+                console.log('Service Worker is ready :^)', reg);
+                reg.pushManager.subscribe({userVisibleOnly: true})
+                    .then(function(sub) {
+                        app.registerEndpoint(sub);
+                    });
+            }).catch(function(error) {
+                console.log('Service Worker error :^(', error);
+            });
     }
-})();
+})(jQuery);
