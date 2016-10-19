@@ -6,7 +6,9 @@
     var app = {
         isLoading: true,
         settings: {
-            email: 'piotr.wojciechowski@nortpoint.io'
+            name: 'Jan',
+            surname: 'Kowalski',
+            email: 'jan.kowalski@gmail.com'
         },
         cart: [],
         spinner: document.querySelector('.spinner'),
@@ -20,6 +22,9 @@
         openCartButtons: document.querySelectorAll('.open-cart'),
         cartListItemTemplate: document.querySelector('.cartListItemTemplate'),
         sidebarCard: document.querySelector('.mdl-card'),
+        userDetailsDialog: document.querySelector('dialog#user-details-dialog'),
+        openUserDetailsButtons: document.querySelector('.open-user-details'),
+        userDetailsSpinner: document.querySelector('dialog#user-details-dialog .mdl-spinner'),
     };
 
     if (!app.pizzaDialog.showModal) {
@@ -40,6 +45,42 @@
             app.cartDialog.close();
         });
 
+    if (!app.userDetailsDialog.showModal) {
+        dialogPolyfill.registerDialog(app.userDetailsDialog);
+    }
+
+    app.userDetailsDialog.querySelector('.close')
+        .addEventListener('click', function() {
+            app.closeUserDetailsDialog();
+        });
+
+    app.userDetailsDialog.querySelector('.save')
+        .addEventListener('click', function() {
+            var name = app.userDetailsDialog.querySelector('#name-field').value,
+                surname = app.userDetailsDialog.querySelector('#surname-field').value,
+                email = app.userDetailsDialog.querySelector('#email-field').value;
+
+            app.settings.name = name;
+            app.settings.surname = surname;
+            app.settings.email = email;
+
+            app.setSettings();
+
+            var form = app.userDetailsDialog.querySelector('form');
+
+            app.userDetailsSpinner.classList.add('is-active');
+            form.setAttribute('hidden', true);
+            app.registerEndpoint(app.subsribtion).then(function() {
+                app.userDetailsSpinner.classList.remove('is-active');
+                form.removeAttribute('hidden');
+                app.closeUserDetailsDialog();
+            }).catch(function(error) {
+                alert(error.statusText);
+                form.removeAttribute('hidden');
+                app.userDetailsSpinner.classList.remove('is-active');
+            });
+        });
+
     for (var i = 0; i < app.openCartButtons.length; i++) {
         app.openCartButtons[i].addEventListener('click', function(event) {
             event.preventDefault();
@@ -47,9 +88,22 @@
         });
     }
 
-    app.init = function() {
+    app.setSettings = function() {
         app.sidebarCard.querySelector('.mdl-card__subtitle-text')
             .textContent = app.settings.email;
+
+        var fullname = ''
+
+        if (app.settings.name) {
+            fullname += app.settings.name;
+        }
+
+        if (app.settings.surname) {
+            fullname += ' ' + app.settings.surname;
+        }
+
+        app.sidebarCard.querySelector('.mdl-card__title-text > div')
+            .textContent = fullname;
     }
 
     app.getPizzas = function() {
@@ -183,6 +237,22 @@
         }
     };
 
+    app.closeUserDetailsDialog = function() {
+        app.userDetailsDialog.close();
+    };
+
+    app.openUserDetailsButtons.addEventListener('click', function() {
+        var nameField = app.userDetailsDialog.querySelector('#name-field'),
+            surnameField = app.userDetailsDialog.querySelector('#surname-field'),
+            emailField = app.userDetailsDialog.querySelector('#email-field');
+
+        nameField.parentElement.MaterialTextfield.change(app.settings.name);
+        surnameField.parentElement.MaterialTextfield.change(app.settings.surname);
+        emailField.parentElement.MaterialTextfield.change(app.settings.email);
+
+        app.userDetailsDialog.showModal();
+    });
+
     app.showSnackbar = function(data) {
         app.snackbar.MaterialSnackbar.showSnackbar(data);
     };
@@ -214,16 +284,16 @@
             userData: app.settings
         };
 
-        $.ajax({
-            url: 'http://localhost:3010/subscribe',
+        return $.ajax({
+            url: "https://server.pizza.nortpoint.io/subscribe"
             method: 'POST',
             data: JSON.stringify(data),
             contentType: "application/json",
         });
-    }
+    };
 
     addToHomescreen();
-    app.init();
+    app.setSettings();
     app.getPizzas();
 
     if ('serviceWorker' in navigator) {
@@ -237,6 +307,7 @@
                 reg.pushManager.subscribe({userVisibleOnly: true})
                     .then(function(sub) {
                         app.registerEndpoint(sub);
+                        app.subsribtion = sub;
                     });
             }).catch(function(error) {
                 console.log('Service Worker error :^(', error);
