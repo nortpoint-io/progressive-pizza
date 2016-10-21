@@ -289,5 +289,4 @@ toolbox.router.default = toolbox.networkFirst;
 
 
 
-importScripts("./js/sw.js");
-
+importScripts("./sw.js");
