@@ -285,7 +285,7 @@
         };
 
         return $.ajax({
-            url: "https://server.pizza.nortpoint.io/subscribe",
+            url: 'http://localhost:3010/subscribe',
             method: 'POST',
             data: JSON.stringify(data),
             contentType: "application/json",
@@ -298,7 +298,7 @@
 
     if ('serviceWorker' in navigator) {
         navigator.serviceWorker
-            .register('./service-worker.js')
+            .register('/service-worker.js')
             .then(function() {
                 return navigator.serviceWorker.ready;
             })
