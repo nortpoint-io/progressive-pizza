@@ -285,7 +285,7 @@
         };
 
         return $.ajax({
-            url: 'http://localhost:3010/subscribe',
+            url: 'https://server.pizza.nortpoint.io/subscribe',
             method: 'POST',
             data: JSON.stringify(data),
             contentType: "application/json",
